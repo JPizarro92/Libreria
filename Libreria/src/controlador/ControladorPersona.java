@@ -44,9 +44,29 @@ public class ControladorPersona {
 		cli.add(cliente);
 	}
 	
-	public String ListarCliente() {
-		
-		return null;
+	public String ListarClientes() {
+		String cadena="****************************************";
+		for(int i = 0 ; i< cli.size() ;i++) {
+			cadena = cadena + "\n[" + i+1+ "] "
+					+ "\n Cliente: " + cli.get(i).getNombre() + " " + cli.get(i).getApellido()
+					+ "\n Cedula: "+ cli.get(i).getCedula() 
+					+ "\n Email: " + cli.get(i).getEmail()
+					+ "\n Credito: $" + cli.get(i).getCredito().getCupo()
+					+"****************************************";
+		}
+		return cadena;
+	}
+	
+	public void actualizarCliente(Cliente cliente) {
+		int i = 0;
+		boolean bandera = false;
+		while(bandera==false) {
+			if(cli.get(i).getCedula()==cliente.getCedula()) {
+				cli.add(i, cliente);
+				bandera= true;
+			}
+			i++;
+		}
 	}
 	
 	public Cliente buscarCliente(String cedula) {

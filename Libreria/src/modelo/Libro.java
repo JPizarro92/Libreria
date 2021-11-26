@@ -45,7 +45,7 @@ public abstract class Libro {
 	
 	public double calcularCostoFinal() {
 		
-		double costoFinal = this.getPrecio()+costoComision();
+		double costoFinal = this.getPrecio()+costoComision()+costoEnvio();
 		
 		return costoFinal;
 		

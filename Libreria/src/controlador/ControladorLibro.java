@@ -78,7 +78,7 @@ public class ControladorLibro {
 		for(int i = 0 ; i< fi.size() ;i++) {
 			cadena = cadena + "\n[" + i+1+ "] "
 					+ "\n Titulo: " + fi.get(i).getTitulo()
-					+ "\n Autor: "+vi.get(i).getAutor() 
+					+ "\n Autor: "+fi.get(i).getAutor() 
 					+ "\n Edicion: " + fi.get(i).getEdicion()
 					+ "\n Costo: $" + fi.get(i).getPrecio()
 					+"****************************************";

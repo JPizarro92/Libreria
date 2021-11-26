@@ -6,6 +6,7 @@ import java.util.List;
 
 import modelo.Cliente;
 import modelo.Compras;
+import modelo.DetalleCompra;
 
 public class ControladorCompras {
 	
@@ -16,14 +17,14 @@ public class ControladorCompras {
 		listaCompras = new ArrayList<Compras>();
 	}
 	
-	public void crearCompra(int numero, Date fecha, Cliente cliente, List DetalleCompra) {
+	public void agregarCompra(int numero, Date fecha, Cliente cliente, DetalleCompra detalleCompra) {
 		
 		Compras compra= new Compras();
 		
 		compra.setNumero(numero);
 		compra.setFecha(fecha);
 		compra.setCliente(cliente);
-		compra.setDetalles(DetalleCompra);
+		compra.setDetalleCompra(detalleCompra);
 		
 		listaCompras.add(compra);
 		
@@ -43,15 +44,33 @@ public class ControladorCompras {
 		return valorT;
 	}
 	
-	public void listarCompras(Cliente cli) {
+	public String listarCompras(String cedula) {
+		String cadena = "";
 		for (int i = 0; i < listaCompras.size(); i++) {
-			   Compras com = listaCompras.get(i);
-					if (cli.getCedula().equals(com.getCliente().getCedula())) {
-			    		System.out.println(com.toString());
-			    	}
-			    	
-				}
+			String auxCedula = listaCompras.get(i).getCliente().getCedula();
+			if(auxCedula!=cedula) {
+				cadena = cadena
+						+"************************************************"
+						+ "\n Compra N: " +  listaCompras.get(i).getNumero()
+						+ "\n ------------------------------------------------"
+						+ "\n Cliente: " + listaCompras.get(i).getCliente().getNombre() + "" + listaCompras.get(i).getCliente().getApellido() 
+						+ "\n Cedula: " + listaCompras.get(i).getCliente().getCedula()
+						+ "\n E-mail: " + listaCompras.get(i).getCliente().getEmail()
+						+ "\n Telefono: " + listaCompras.get(i).getCliente().getTelefono()
+						+ "\n Detalle compra: \n"
+						+ "\t Titulo: " + listaCompras.get(i).getDetalleCompra().getLibro().getTitulo()
+						+ "\n \t Autor: " +  listaCompras.get(i).getDetalleCompra().getLibro().getAutor()
+						+ "\n \t Edicion: " +  listaCompras.get(i).getDetalleCompra().getLibro().getEdicion()
+						+ "\n \t Costo: " +  listaCompras.get(i).getDetalleCompra().getLibro().getPrecio()
+						+ "\n ------------------------------------------------"
+						+ "\n \t Total: " +  listaCompras.get(i).getDetalleCompra().getPrecioTotal();
+			}
+		}
+		return cadena;
 	}
 	
+	public int sizeCompras() {
+		return listaCompras.size();
+	}
 	
 }

@@ -8,9 +8,8 @@ public class Compras {
 	private int numero;
 	private Date fecha;
 	private Cliente cliente;
-	private List<DetalleCompra> detalles;
-	
-	
+	private DetalleCompra detalleCompra;
+		
 	public int getNumero() {
 		return numero;
 	}
@@ -29,16 +28,11 @@ public class Compras {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public List<DetalleCompra> getDetalles() {
-		return detalles;
+	public DetalleCompra getDetalleCompra() {
+		return detalleCompra;
 	}
-	public void setDetalles(List<DetalleCompra> detalles) {
-		this.detalles = detalles;
-	}
-	@Override
-	public String toString() {
-		return "Compras [numero=" + numero + ", fecha=" + fecha + ", cliente=" + cliente + ", detalles=" + detalles
-				+ "]";
+	public void setDetalleCompra(DetalleCompra detalleCompra) {
+		this.detalleCompra = detalleCompra;
 	}
 	
 	

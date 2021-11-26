@@ -34,7 +34,7 @@ public class Principal {
 		controladorCompras = new ControladorCompras();
 		detalleCompra = new DetalleCompra();
 		detalles = new ArrayList<DetalleCompra>();
-		int num=1;
+		int numFactura=1;
 		int opc;
 		boolean bandera = false;
 		
@@ -89,9 +89,10 @@ public class Principal {
 				String menuCliente = "----Seleccione una opción:----\n"
 						+ "[1] Registrar Cliente\n"
 						+ "[2] Recargar Credito\n"
-						+ "[3] << Regresar";
+						+ "[3] Listar Clientes\n"
+						+ "[4] << Regresar";
 				System.out.println(menuCliente);
-				int opcMenuCliente = validaNumeroIntRango(1, 3);
+				int opcMenuCliente = validaNumeroIntRango(1, 4);
 				switch(opcMenuCliente) {
 				case 1:
 					System.out.println("********************************************");
@@ -133,13 +134,12 @@ public class Principal {
 					controladorPersona.recargaCredito(cli.getCredito().getId(), recarga);
 					System.out.println("VALOR RECARGADO CORRECTAMENTE");
 					;break;
+				case 3:
+					System.out.println(controladorPersona.ListarClientes());
+					//controladorPersona.ListarCliente();
+					;break;
 				}
 				
-				
-				
-				
-				
-				System.out.println("");
 				;break;
 			case 3:
 				System.out.println("********************************************");
@@ -168,40 +168,40 @@ public class Principal {
 						System.out.println(menuLibros);
 						//Leer opcion de libro a comprar
 						int opcMenuLibros = validaNumeroIntRango(1, 3);
-						boolean banderaCompra = false;
-						int numeroDetalle = 1;
+						
 						switch (opcMenuLibros) {
 						case 1:
 							if(cLibro.sizeLibrosDigitales()!=0) {
-								List<DetalleCompra> misDetalles = new ArrayList<DetalleCompra>();
-								while(banderaCompra==false) {
-									System.out.println("Seleccione un libro a comprar");
-									System.out.println(cLibro.listarLibroDigital());
-									int eleccionLibro = validaNumeroIntRango(1, cLibro.sizeLibrosDigitales());
-									LibroDigital libroCompradoDigital = cLibro.obtenerLibroDigital(eleccionLibro);
-									DetalleCompra detalleCompra = new DetalleCompra();
+								System.out.println("Seleccione un libro a comprar");
+								System.out.println(cLibro.listarLibroDigital());
+								int eleccionLibro = validaNumeroIntRango(1, cLibro.sizeLibrosDigitales());
+								LibroDigital libroCompradoDigital = cLibro.obtenerLibroDigital(eleccionLibro-1);
+								DetalleCompra detalleCompra = new DetalleCompra();
 									
-									System.out.println("----Ingrese la cantidad de compra");
-									int cantidad = validaNumeroInt();
+								System.out.println("----Ingrese la cantidad de compra");
+								int cantidad = validaNumeroInt();
 									
-									detalleCompra.setNumeroDetalle(numeroDetalle);
-									detalleCompra.setLibro(libroCompradoDigital);
-									detalleCompra.setCantidad(cantidad);
-									detalleCompra.setPrecioTotal(cantidad*libroCompradoDigital.calcularCostoFinal());
-									
-									misDetalles.add(detalleCompra);
-									
-									String menuAuxLibroD = "----Deseas Agregar mas Libros a tu compra?----\n"
-											+ "[1] Si\n"
-											+ "[2] No\n";
-									System.out.println(menuAuxLibroD);
-									
-									int leerContinuidadD = validaNumeroIntRango(1, 2);
-									
-									if(leerContinuidadD==2) {
-										banderaCompra=true;
-									}
+								detalleCompra.setNumeroDetalle(1);
+								detalleCompra.setLibro(libroCompradoDigital);
+								detalleCompra.setCantidad(cantidad);
+								detalleCompra.setPrecioTotal(cantidad*libroCompradoDigital.calcularCostoFinal());
 								
+								SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");
+							    Calendar calendar = Calendar.getInstance();
+							    Date dateObj = calendar.getTime();
+								Date fecha = calendar.getTime();
+								
+								if(cli.getCredito().getCupo()>detalleCompra.getPrecioTotal()) {
+									cli.getCredito().setCupo(cli.getCredito().getCupo()-detalleCompra.getPrecioTotal());
+									//controladorPersona.actualizarCliente(cli);
+									controladorCompras.agregarCompra(numFactura, fecha, cli, detalleCompra);
+									System.out.println("*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*");
+									System.out.println("\t Compra Realizada Exitosamente");
+									System.out.println("*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*");
+								}else{
+									System.out.println("///////////////////////////////////////////");
+									System.out.println("        Saldo insuficiente - Recarge!!");
+									System.out.println("///////////////////////////////////////////");
 								}
 								
 							}else {
@@ -211,21 +211,48 @@ public class Principal {
 							}
 							;break;
 						case 2:
-							
-
+							if(cLibro.sizeLibrosImpresos() !=0) {
+								System.out.println("Seleccione un libro a comprar");
+								System.out.println(cLibro.listarLibroImpreso());
+								int eleccionLibro = validaNumeroIntRango(1, cLibro.sizeLibrosImpresos());
+								LibroImpreso libroCompradoImpreso = cLibro.obtenerLibroImpreso(eleccionLibro-1);
+								DetalleCompra detalleCompra = new DetalleCompra();
+									
+								System.out.println("----Ingrese la cantidad de compra");
+								int cantidad = validaNumeroInt();
+									
+								detalleCompra.setNumeroDetalle(1);
+								detalleCompra.setLibro(libroCompradoImpreso);
+								detalleCompra.setCantidad(cantidad);
+								detalleCompra.setPrecioTotal(cantidad*libroCompradoImpreso.calcularCostoFinal());
+								
+								SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");
+							    Calendar calendar = Calendar.getInstance();
+							    Date dateObj = calendar.getTime();
+								Date fecha = calendar.getTime();
+								
+								if(cli.getCredito().getCupo()>detalleCompra.getPrecioTotal()) {
+									cli.getCredito().setCupo(cli.getCredito().getCupo()-detalleCompra.getPrecioTotal());
+									controladorPersona.actualizarCliente(cli);
+									controladorCompras.agregarCompra(numFactura, fecha, cli, detalleCompra);
+									System.out.println("*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*");
+									System.out.println("\t Compra Realizada Exitosamente");
+									System.out.println("*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*");
+								}else{
+									System.out.println("///////////////////////////////////////////");
+									System.out.println("        Saldo insuficiente - Recarge!!");
+									System.out.println("///////////////////////////////////////////");
+								}
+								
+							}else {
+								System.out.println("///////////////////////////////////////////");
+								System.out.println("        No existen libros a vender!!");
+								System.out.println("///////////////////////////////////////////");
+							}					
 							;break;
-						
 						}
-						detalleCompra.setCantidad(1);
-						detalleCompra.setNumeroDetalle(num);
-						detalles.add(detalleCompra);
-						 SimpleDateFormat dtf = new SimpleDateFormat("yyyy/MM/dd");
-					     Calendar calendar = Calendar.getInstance();
-					     Date dateObj = calendar.getTime();
-						Date fecha = calendar.getTime();
-						controladorCompras.crearCompra(1, fecha, cli, detalles);
-						System.out.println("COMPRA REALIZADA CON EXITO");
-						num++;
+						
+						numFactura++;
 					}else {
 						System.out.println("///////////////////////////////////////////");
 						System.out.println("        El cliente no registrado!!");
@@ -233,16 +260,22 @@ public class Principal {
 					}
 					;break;
 				case 2:
-					System.out.println("********************************************");
-					System.out.println("          Listar Compra por Cliente");
-					System.out.println("********************************************");
-					System.out.println("----Ingrese Cedula Cliente:");
-					String cedulaClien = entrada.nextLine();
-					Cliente clien = controladorPersona.buscarCliente(cedulaClien);
-					controladorCompras.listarCompras(clien);
+					
+					if(controladorCompras.sizeCompras()>0) {
+						System.out.println("********************************************");
+						System.out.println("          Listar Compra por Cliente");
+						System.out.println("********************************************");
+						System.out.println("----Ingrese Cedula Cliente:");
+						String cedulaClien = entrada.nextLine();
+						System.out.println(controladorCompras.listarCompras(cedulaClien));
+					}else {
+						System.out.println("///////////////////////////////////////////");
+						System.out.println("        El ventas no registradas!!");
+						System.out.println("///////////////////////////////////////////");
+					}
 					;break;
 				}
-				System.out.println("");
+				
 				;break;
 			case 4:
 				System.out.println("*********************************************");
